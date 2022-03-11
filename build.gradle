@@ -1,0 +1,56 @@
+allprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+    apply plugin: 'checkstyle'
+
+    group = 'com.dataart.lseg'
+    version = '0.0.1-SNAPSHOT'
+
+    targetCompatibility = 11
+    sourceCompatibility = 11
+
+    ext {
+        set('testcontainersVersion', "1.16.0")
+        set('lombokVersion', "1.18.20")
+        set('restAssuredVersion', "4.4.0")
+        set('springDocVersion', "1.5.9")
+        set('jwtVersion', "3.18.1")
+        set('h2Version', "1.4.200")
+        set('equalsverifierVersion', "3.7")
+        set('springCloudVersion', "3.0.3")
+        set('springBootVersion', "2.5.4")
+        set('dependencyManagementVersion', "1.0.11.RELEASE")
+    }
+
+    dependencies {
+        compileOnly "org.projectlombok:lombok:$lombokVersion"
+        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    }
+
+    checkstyle {
+        toolVersion = 8.44
+        configFile = file("$rootProject.projectDir/config/checkstyle/checkstyle.xml")
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    jacocoTestReport {
+        dependsOn test
+    }
+
+    test {
+        testLogging.showStandardStreams = true
+        useJUnitPlatform()
+        finalizedBy jacocoTestReport
+    }
+}

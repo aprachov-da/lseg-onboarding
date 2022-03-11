@@ -1,0 +1,3 @@
+rootProject.name = 'lseg-onboarding'
+
+include 'lseg-onboarding-service'

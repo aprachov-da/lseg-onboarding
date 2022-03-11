@@ -1,0 +1,26 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: datanexus
+    password: datanexus
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    generate-ddl: false
+    hibernate:
+      naming:
+        physical-strategy: com.dataart.lseg.common.SnakeCasePhysicalNamingStrategy
+  liquibase:
+    change-log: liquibase/com/datanexus/lseg/db/changelog/changelog-current.xml
+    drop-first: true #todo delete in production
+jwt:
+  header: Authorization
+  prefix: "Bearer "
+  secret: ist-service-key
+  expirationMs: 86400000

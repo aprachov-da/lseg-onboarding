@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'jdk11'
+    }
+
+    environment {
+        SSH_KEY = "/var/lib/jenkins/dev.pem"
+        USER_NAME = "centos"
+        HOST = "ec2-3-121-113-124.eu-central-1.compute.amazonaws.com"
+        LIBS_HOME = '/home/centos/libs'
+    }
+
+    stages {
+        stage('Deploy') {
+            steps {
+                sh 'chmod +x gradlew'
+                sh './gradlew clean bootJar --console=plain'
+                sh 'ssh -i $SSH_KEY $USER_NAME@$HOST "sudo systemctl stop ist-service"'
+                sh 'scp -i $SSH_KEY ist-service/build/libs/ist-service-0.0.1-SNAPSHOT.jar $USER_NAME@$HOST:$LIBS_HOME'
+                sh 'ssh -i $SSH_KEY $USER_NAME@$HOST "ls $LIBS_HOME"'
+                sh 'ssh -i $SSH_KEY $USER_NAME@$HOST "sudo systemctl start ist-service"'
+            }
+        }
+    }
+}

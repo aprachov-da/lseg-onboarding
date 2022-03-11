@@ -1,0 +1,8 @@
+server:
+  port: 8089
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: jdbc:postgresql://ist-db.cplqxqlmjzdl.eu-central-1.rds.amazonaws.com:5432/postgres

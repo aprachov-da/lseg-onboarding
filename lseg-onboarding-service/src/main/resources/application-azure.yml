@@ -1,0 +1,12 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: jdbc:postgresql://ist-db-server.postgres.database.azure.com:5432/postgres
+    username: datanexus@ist-db-server
+    password: nKBbNd3wcKXRbkE
+  liquibase:
+    default-schema: ist
