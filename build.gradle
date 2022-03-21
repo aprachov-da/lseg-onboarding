@@ -15,8 +15,6 @@ allprojects {
         set('lombokVersion', "1.18.20")
         set('restAssuredVersion', "4.4.0")
         set('springDocVersion', "1.5.9")
-        set('jwtVersion', "3.18.1")
-        set('h2Version', "1.4.200")
         set('equalsverifierVersion', "3.7")
         set('springCloudVersion', "3.0.3")
         set('springBootVersion', "2.5.4")

@@ -1,14 +1,1 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:postgres;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
-    driver-class-name: org.h2.Driver
-  jpa:
-    database: h2
-    database-platform: org.hibernate.dialect.H2Dialect
-    show-sql: true
-    generate-ddl: false
-    hibernate:
-      naming:
-        physical-strategy: com.dataart.ist.common.SnakeCasePhysicalNamingStrategy
-  liquibase:
-    change-log: liquibase/com/datanexus/ist/db/changelog/changelog-current.xml

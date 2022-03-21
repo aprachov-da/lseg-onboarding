@@ -5,9 +5,12 @@ import com.dataart.lseg.controller.UpdateLicenseRequest;
 import com.dataart.lseg.converter.LicenseEntityConverter;
 import com.dataart.lseg.dto.License;
 import com.dataart.lseg.entity.LicenseEntity;
-import com.dataart.lseg.exception.LicenseNotFoundException;
+import com.dataart.lseg.messaging.RedisMessagePublisher;
 import com.dataart.lseg.repository.LicenseRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +21,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LicenseService {
 
+    private static Logger logger = LoggerFactory.getLogger(LicenseService.class);
+
     private final LicenseRepository licenseRepository;
     private final LicenseEntityConverter licenseEntityConverter;
+    @Autowired
+    private RedisMessagePublisher messagePublisher;
 
     public ResponseEntity<UUID> createLicense(LicenseCreateRequest request) {
         LicenseEntity licenseEntity = licenseEntityConverter.toCreateEntity(request);
@@ -29,12 +36,7 @@ public class LicenseService {
 
     @Transactional
     public ResponseEntity<HttpStatus> deleteLicense(UUID licenseId) {
-        licenseRepository.delete(licenseRepository.getById(licenseId));
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    public ResponseEntity<HttpStatus> deleteLicenses() {
-        licenseRepository.deleteAll();
+        licenseRepository.delete(licenseId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -42,6 +44,12 @@ public class LicenseService {
     public ResponseEntity<HttpStatus> updateLicense(UUID licenseId, UpdateLicenseRequest request) {
         LicenseEntity licenseEntity = getLicenseEntity(licenseId);
         licenseRepository.save(licenseEntityConverter.toUpdateEntity(licenseEntity, request));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<HttpStatus> lockLicense(UUID licenseId) {
+        logger.info(">> publishing : {}", licenseId);
+        messagePublisher.publish(licenseId.toString());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -56,7 +64,6 @@ public class LicenseService {
     }
 
     private LicenseEntity getLicenseEntity(UUID licenseId) {
-        return licenseRepository.findById(licenseId).orElseThrow(
-                () -> new LicenseNotFoundException(licenseId));
+        return licenseRepository.findById(licenseId);
     }
 }

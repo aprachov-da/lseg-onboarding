@@ -1,29 +1,17 @@
 package com.dataart.lseg.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data
-@Entity
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-@Table(name = "licenses")
 @NoArgsConstructor
-public class LicenseEntity {
-    @Id
-    @Column(name = "license_id")
-    @EqualsAndHashCode.Include
+@AllArgsConstructor
+public class LicenseEntity implements Serializable {
     private UUID id;
-
     private String name;
-
     private String data;
 }

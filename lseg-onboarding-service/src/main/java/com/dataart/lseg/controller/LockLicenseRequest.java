@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-public class LicenseCreateRequest {
-    private String name;
-    private String data;
+public class LockLicenseRequest {
+    private boolean lock;
 }

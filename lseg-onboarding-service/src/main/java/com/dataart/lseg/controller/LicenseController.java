@@ -35,15 +35,15 @@ public class LicenseController {
         return licenseService.deleteLicense(licenseId);
     }
 
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteAllLicenses() {
-        return licenseService.deleteLicenses();
-    }
-
     @PutMapping("/{licenseId}")
     public ResponseEntity<HttpStatus> updateLicense(@PathVariable("licenseId") UUID licenseId,
                                                     @RequestBody UpdateLicenseRequest request) {
         return licenseService.updateLicense(licenseId, request);
+    }
+
+    @PostMapping("/lock/{licenseId}")
+    public ResponseEntity<HttpStatus> lockLicense(@PathVariable("licenseId") UUID licenseId) {
+        return licenseService.lockLicense(licenseId);
     }
 
     @GetMapping("/{licenseId}")

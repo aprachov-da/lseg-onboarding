@@ -8,6 +8,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class UpdateLicenseRequest {
-    protected String name;
-    protected String data;
+    private String name;
+    private String data;
 }
